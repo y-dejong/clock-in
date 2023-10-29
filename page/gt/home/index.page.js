@@ -3,7 +3,7 @@ import { log as Logger } from "@zos/utils";
 import { push } from "@zos/router";
 import { TEXT_STYLE } from "zosLoader:./index.page.[pf].layout.js";
 
-const logger = Logger.getLogger("helloworld");
+const logger = Logger.getLogger("Hello World");
 Page({
   onInit() {
     logger.debug("page onInit invoked");

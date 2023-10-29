@@ -1,6 +1,6 @@
 import { log as Logger } from "@zos/utils";
 import { createWidget, widget, align, prop, text_style, event } from "@zos/ui";
-const logger = Logger.getLogger("clock-in");
+const logger = Logger.getLogger("Hello World");
 import { push } from "@zos/router";
 import { Accelerometer, BloodOxygen, HeartRate, Time } from "@zos/sensor";
 
@@ -60,7 +60,7 @@ function spo2Callback() {
       push({
         url: "page/gt/trigger/index.page",
         params: {
-          description: "Your blood oxygen level is very low.",
+          description: "You're blood oxygen level is very low.",
         },
       });
     }
@@ -124,10 +124,10 @@ Page({
     });
 
     const trigger_button = createWidget(widget.BUTTON, {
-      x: 200,
-      y: 200,
-      w: 96,
-      h: 96,
+      x: 180,
+      y: 180,
+      w: 120,
+      h: 120,
       radius: 100,
       normal_src: "trigger_icon.png",
       press_src: "target_icon.png",
@@ -144,13 +144,13 @@ Page({
     });
 
     const stop_button = createWidget(widget.BUTTON, {
-      x: 200,
+      x: 120,
       y: 340,
-      w: 160,
+      w: 240,
       h: 80,
       radius: 10,
-      normal_color: 0xfc6950,
-      press_color: 0xfeb4a8,
+      normal_color: 0x888888,
+      press_color: 0xbbbbbb,
       text: "Stop recording",
       click_func: (button_widget) => {
         button_widget.setProperty(prop.MORE);
