@@ -57,6 +57,25 @@ Page({
         });
       },
     });
+
+    const stop_button = createWidget(widget.BUTTON, {
+      x: 200,
+      y: 340,
+      w: 160,
+      h: 80,
+      radius: 10,
+      normal_color: 0xfc6950,
+      press_color: 0xfeb4a8,
+      text: "Stop recording",
+      click_func: (button_widget) => {
+        button_widget.setProperty(prop.MORE);
+        logger.log("Clicked button, end recording");
+        push({
+          url: "page/gt/stop/index.page",
+          // params: "",  can pass in a json object
+        });
+      },
+    });
   },
 
   onDestroy() {
