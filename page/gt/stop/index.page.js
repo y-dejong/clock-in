@@ -19,12 +19,12 @@ function generateReport(healthdata) {
   healthdata.hr_history.forEach((x) => totalhr += x);
   result += "Your average heart rate was " +
     (((totalhr / healthdata.hr_history.length) > 140) ?
-     "elevated.\n" : "normal.\n");
-  result += " (avg: " + (totalhr/healthdata.hr_history.length) + ").";
+     "elevated" : "normal");
+  result += " (avg: " + (totalhr/healthdata.hr_history.length) + ").\n";
 
   var totalspo2 = 0;
   healthdata.spo2_history.forEach((x) => totalspo2 += x);
-  result += "Your average heart rate was " +
+  result += "Your average blood oxygen level was " +
     (((totalspo2 / healthdata.spo2_history.length) < 90) ?
      "too low" : "normal");
   result += " (avg: " + (totalspo2/healthdata.spo2_history.length) + ").";
