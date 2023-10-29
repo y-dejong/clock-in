@@ -13,9 +13,32 @@ import { push, back } from "@zos/router";
 
 const scrollBar = createWidget(widget.PAGE_SCROLLBAR);
 
+function generateReport(healthdata) {
+  var result = "During your workday:\n";
+  var totalhr = 0;
+  healthdata.hr_history.forEach((x) => totalhr += x);
+  result += "Your average heart rate was " +
+    (((totalhr / healthdata.hr_history.length) > 140) ?
+     "elevated.\n" : "normal.\n");
+  result += " (avg: " + (totalhr/healthdata.hr_history.length) + ").";
+
+  var totalspo2 = 0;
+  healthdata.spo2_history.forEach((x) => totalspo2 += x);
+  result += "Your average heart rate was " +
+    (((totalspo2 / healthdata.spo2_history.length) < 90) ?
+     "too low" : "normal");
+  result += " (avg: " + (totalspo2/healthdata.spo2_history.length) + ").";
+
+  result += "\n\nHazards during day:\n";
+  result += `${healthdata.incident.hour}:${("0" + healthdata.incident.minute).slice(-2)}: ${healthdata.incident.description}`;
+
+  return result;
+}
+
 Page({
   onInit(params) {
-    var trigger_description = JSON.parse(params).description;
+    var paramobj = JSON.parse(params);
+    var trigger_description = paramobj.description;
     const title = createWidget(widget.TEXT, {
       x: 0,
       y: 20,
@@ -37,9 +60,9 @@ Page({
       color: 0xffffff,
       text_size: 36,
       align_h: align.CENTER_H,
-      align_v: align.CENTER_V,
+      align_v: align.TOP,
       text_style: text_style.WRAP,
-      text_i18n: trigger_description,
+      text: generateReport(healthdata),
     });
     // logger.debug("stop page onInit invoked" + params.description);
   },

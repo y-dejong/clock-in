@@ -19,7 +19,9 @@ var lastdata = {
   hour_hr: [],
 };
 var healthdata = {
-  day_hr: [],
+  hr_history: [],
+  spo2_history: [],
+  temp_history: []
 };
 
 function accelCallback() {
@@ -31,6 +33,7 @@ function accelCallback() {
         url: "page/gt/trigger/index.page",
         params: {
           description: "Clock In noticed a collision or fall.",
+          healthdata: healthdata
         },
       });
       logger.debug(JSON.stringify(acceldata));
@@ -45,7 +48,8 @@ function hrCallback() {
       url: "page/gt/trigger/index.page",
       params: {
         description:
-          "Your heart rate is extremely high. Stop all strenuous physical activity.",
+        "Your heart rate is extremely high. Stop all strenuous physical activity.",
+        healthdata: healthdata
       },
     });
   }
@@ -61,6 +65,7 @@ function spo2Callback() {
         url: "page/gt/trigger/index.page",
         params: {
           description: "You're blood oxygen level is very low.",
+          healthdata: healthdata
         },
       });
     }
@@ -88,15 +93,25 @@ Page({
       });
     }, 1000);
 
+    setInterval(fetchData, 5000);
+
     setInterval(() => {
       logger.debug(JSON.stringify(hr.getAFibRecord()));
     }, 5000);
+
+    // Record to healthdata
+    setInterval(() => {
+      healthdata.hr_history.push(lastdata.hr);
+      (lastdata.spo2) ? healthdata.spo2_history.push(lastdata.spo2) : null;
+      healthdata.temp_history.push(lastdata.temp);
+    }, 10000)
   },
   build() {
     logger.debug("record page build invoked");
 
     // text for heart rate and temp
-    let temperature = 81;
+    let temperature = 65;
+    lastdata.temp = temperature;
     const heart_rate_text = createWidget(widget.TEXT, {
       x: 40,
       y: 120,
@@ -138,6 +153,7 @@ Page({
           url: "page/gt/trigger/index.page",
           params: {
             description: "Your reported a hazard.",
+            healthdata: healthdata
           },
         });
       },
@@ -164,6 +180,20 @@ Page({
     widgets.heart_rate_text = heart_rate_text;
     widgets.temperature_text = temperature;
     widgets.trigger_button = trigger_button;
+  },
+
+  fetchData() {
+    logger.log("Requesting data");
+    this.request({
+      method: "GET_DATA"
+    })
+      .then((data) => {
+        logger.log("Got data");
+        logger.log(data);
+        widgets.temperature_text.setProperty(prop.MORE, {
+          text: `${data} F`,
+        });
+      });
   },
 
   onDestroy() {

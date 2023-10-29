@@ -8,18 +8,32 @@ import {
   event,
   anim_status,
 } from "@zos/ui";
+import { Time } from "@zos/sensor";
 const logger = Logger.getLogger("Hello World");
 import { push, back } from "@zos/router";
+
+const time = new Time();
+
 var trigger_description;
+var healthdata;
 Page({
   onInit(params) {
     logger.debug("printing params");
     logger.debug(params);
-    trigger_description = JSON.parse(params).description;
+    const paramobj = JSON.parse(params);
+    trigger_description = paramobj.description;
     logger.debug(
       "trigger page onInit invoked for the following reason: " +
         trigger_description
     );
+    healthdata = paramobj.healthdata;
+    logger.debug(JSON.stringify(healthdata));
+
+    healthdata.incident = {
+      hour: time.getHours(),
+      minute: time.getMinutes(),
+      description: trigger_description
+    };
   },
   build() {
     logger.debug("trigger page build invoked");
@@ -132,7 +146,9 @@ Page({
         logger.log("Clicked button, end recording");
         push({
           url: "page/gt/stop/index.page",
-          // params: "",  can pass in a json object
+          params: {
+            healthdata: healthdata
+          }
         });
       },
     });
