@@ -1,5 +1,6 @@
 import { createWidget, widget, align, prop, text_style, event } from "@zos/ui";
 import { log as Logger } from "@zos/utils";
+import { push } from "@zos/router";
 import { TEXT_STYLE } from "zosLoader:./index.page.[pf].layout.js";
 
 const logger = Logger.getLogger("helloworld");
@@ -33,8 +34,11 @@ Page({
       press_src: "clockin_icon_pressed.png", // color 18
       text: "",
       click_func: (button_widget) => {
-        button_widget.setProperty(prop.MORE);
-        logger.log("Clicked button, prop.MORE: " + prop.MORE);
+        logger.log("Clicked button, starting recording");
+        push({
+          url: "page/gt/record/index.page",
+          // params: "",  can pass in a json object
+        });
       },
     });
 

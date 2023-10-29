@@ -12,10 +12,7 @@
     "vender": "GraY",
     "description": "Track working conditions"
   },
-  "permissions": [
-    "data:os.device.info",
-    "device:os.local_storage"
-  ],
+  "permissions": ["data:os.device.info", "device:os.local_storage"],
   "runtime": {
     "apiVersion": {
       "compatible": "3.0.0",
@@ -29,7 +26,9 @@
       "module": {
         "page": {
           "pages": [
-            "page/gt/home/index.page"
+            "page/gt/home/index.page",
+            "page/gt/record/index.page",
+            "page/gt/trigger/index.page"
           ]
         }
       },
